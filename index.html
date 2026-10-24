@@ -1,0 +1,905 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DCD Painting &amp; Home Services · Windsor &amp; Essex County</title>
+<meta name="description" content="Residential and commercial painting, cabinet painting, kitchen backsplashes, finish trimming and handyman services in Windsor and Essex County. Fully insured and bonded. Rated 4.9 from 45 reviews.">
+<meta name="theme-color" content="#24201c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Instrument+Serif:ital@1&family=IBM+Plex+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Concept: "The first coat". The page is a primed wall that DCD paints.
+   Wenge (deep brown-black) + primer white + painter's-tape blue. Tape strips peel at every room change. */
+:root{
+  --wenge:#24201c; --wenge-2:#2f2a25; --primer:#efede7; --primer-2:#e5e2d9;
+  --tape:#2f6bc8; --tape-lt:#9fc0f0; --tape-skin:rgba(74,132,220,.92);
+  --ink:#1d1a17; --muted:#6c675f; --line:#d6d1c6; --pline:rgba(239,237,231,.14);
+  --display:"Gloock",Georgia,"Times New Roman",serif;
+  --serif:"Instrument Serif",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --ui:"Hanken Grotesk",system-ui,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --gl:max(16px, env(safe-area-inset-left, 0px)); --gr:max(16px, env(safe-area-inset-right, 0px));
+  --pad:clamp(16px,4vw,56px);
+}
+*,*::before,*::after{box-sizing:border-box}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+html,body{overflow-x:clip;margin:0}
+body{background:var(--primer);color:var(--ink);font-family:var(--ui);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+:focus-visible{outline:2px solid var(--tape-lt);outline-offset:3px;border-radius:6px}
+.wrap{padding-left:calc(var(--gl) + var(--pad) - 16px);padding-right:calc(var(--gr) + var(--pad) - 16px);max-width:1520px;margin-inline:auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* eyebrow = a short piece of tape with a pencilled label */
+.eyebrow{position:relative;display:inline-flex;align-items:center;font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:6px 14px 5px;color:#fff;background:var(--tape-skin);clip-path:polygon(0 8%,3% 0,7% 12%,10% 2%,90% 0,94% 10%,97% 1%,100% 14%,99% 88%,96% 100%,93% 90%,89% 100%,10% 100%,6% 88%,3% 100%,0 90%,1% 50%);transform:rotate(-1.2deg);width:fit-content;max-width:100%}
+.eyebrow--plain{background:none;color:inherit;clip-path:none;padding:0;transform:none;opacity:.7}
+
+.display{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:-.015em;line-height:.9;margin:0;text-wrap:balance}
+.display em{font-family:var(--serif);font-style:italic;text-transform:none;letter-spacing:-.01em;font-size:1.08em;line-height:.8}
+.h2{font-size:clamp(42px,min(7.4vw,12vh),120px)}
+.lede{font-size:clamp(17px,1.35vw,20px);color:var(--muted);max-width:50ch;margin:0}
+
+/* char split masks */
+.w{display:inline-block;overflow:clip;padding-bottom:.08em;margin-bottom:-.08em;vertical-align:top}
+.c{display:inline-block;will-change:transform}
+
+/* ---------- buttons ---------- */
+.btn{position:relative;display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 26px;border-radius:999px;font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap;isolation:isolate;overflow:hidden;transition:transform .6s var(--ease)}
+.btn--tape{background:var(--tape);color:#fff}
+.btn--tape::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--wenge);transform:translateY(101%);border-radius:inherit;transition:transform .6s var(--ease)}
+.btn--tape:hover::before{transform:none}
+.on-dark .btn--tape::before{background:#fff}
+.on-dark .btn--tape:hover{color:var(--ink)}
+.btn--ghost{color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+.btn--ghost:hover{background:rgba(255,255,255,.1)}
+.btn--light{background:var(--primer);color:var(--ink)}
+.roll{display:inline-grid;overflow:hidden;line-height:1.3}
+.roll>span{grid-area:1/1;transition:transform .6s var(--ease)}
+.roll>span:last-child{transform:translateY(110%)}
+.btn:hover .roll>span:first-child{transform:translateY(-110%)}
+.btn:hover .roll>span:last-child{transform:none}
+.btn svg{width:18px;height:18px;flex:none;transition:transform .6s var(--ease)}
+.btn:hover svg{transform:translateX(3px)}
+
+/* ---------- peeling tape (the through-line) ---------- */
+.tape{position:absolute;left:0;right:0;top:-15px;height:30px;z-index:6;pointer-events:none}
+.tape__body{position:absolute;inset:0;background:
+  repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 2px,transparent 2px 7px),
+  linear-gradient(180deg,rgba(255,255,255,.16),rgba(0,0,0,.08)),var(--tape-skin);
+  box-shadow:0 2px 6px -2px rgba(0,0,0,.35);clip-path:inset(0 0 0 var(--peel,0%))}
+.tape__curl{position:absolute;top:0;height:100%;width:clamp(60px,7vw,110px);left:var(--peel,0%);transform-origin:0 50%;transform:translateX(-2px) rotate(-14deg) translateY(-48%) skewX(-8deg);background:linear-gradient(90deg,#7fa8ea,#4a84dc 60%,#3b74cf);box-shadow:8px 10px 14px -6px rgba(0,0,0,.4);opacity:var(--curl,0);border-radius:2px 6px 6px 2px}
+
+/* ---------- header ---------- */
+.header{position:fixed;z-index:50;left:0;right:0;top:0;padding-top:calc(14px + env(safe-area-inset-top,0px));pointer-events:none;transition:transform .6s var(--ease)}
+.header.is-hidden{transform:translateY(-130%)}
+.header__bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{pointer-events:auto;display:flex;align-items:center;text-decoration:none;height:56px;padding:0 20px;border-radius:999px;background:rgba(36,32,28,.72);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 10px 30px -14px rgba(0,0,0,.5);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);transition:transform .6s var(--ease)}
+.brand:hover{transform:scale(1.03)}
+.brand img{height:34px;width:auto}
+.header__actions{pointer-events:auto;display:flex;gap:8px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 18px;border-radius:999px;background:rgba(36,32,28,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);color:#fff;backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);text-decoration:none;font-weight:500;font-size:15px;transition:background .4s}
+.pill:hover{background:rgba(36,32,28,.85)}
+.pill svg{width:16px;height:16px}
+.pill--tape{background:var(--tape)}
+.pill--tape:hover{background:#2459ad}
+.menu-btn{width:48px;height:48px;border-radius:50%;background:var(--primer);color:var(--ink);display:grid;place-items:center;box-shadow:0 10px 30px -14px rgba(0,0,0,.5)}
+.menu-btn .bars{width:18px;height:10px;position:relative}
+.menu-btn .bars i{position:absolute;left:0;right:0;height:2px;background:currentColor;border-radius:2px;transition:transform .5s var(--ease),top .5s var(--ease)}
+.menu-btn .bars i:first-child{top:0}.menu-btn .bars i:last-child{top:8px}
+.is-menu .menu-btn .bars i:first-child{top:4px;transform:rotate(45deg)}
+.is-menu .menu-btn .bars i:last-child{top:4px;transform:rotate(-45deg)}
+
+.menu{position:fixed;inset:0;z-index:45;background:var(--wenge);color:var(--primer);display:grid;align-content:end;padding:calc(110px + env(safe-area-inset-top,0px)) 0 calc(36px + env(safe-area-inset-bottom,0px));clip-path:inset(0 0 100% 0);visibility:hidden;transition:clip-path .9s var(--ease),visibility 0s .9s}
+.is-menu .menu{clip-path:inset(0 0 0 0);visibility:visible;transition:clip-path .9s var(--ease)}
+.menu ol{list-style:none;margin:0;padding:0;counter-reset:m}
+.menu li{border-top:1px solid var(--pline);counter-increment:m}
+.menu li a{display:flex;align-items:baseline;justify-content:space-between;padding:12px 0;text-decoration:none;font-family:var(--display);text-transform:uppercase;font-size:clamp(38px,min(7.4vw,10vh),84px);line-height:1;transition:color .4s,padding .6s var(--ease)}
+.menu li a::after{content:"0" counter(m);font-family:var(--mono);font-size:12px;color:var(--tape-lt)}
+.menu li a:hover{color:var(--tape-lt);padding-left:12px}
+.menu__foot{display:flex;flex-wrap:wrap;gap:12px 32px;margin-top:28px;font-family:var(--mono);font-size:13px;color:rgba(239,237,231,.7)}
+.menu__foot a{text-decoration:none}
+
+/* ---------- hero: the roller ---------- */
+.hero{position:relative;height:185vh;background:var(--wenge)}
+.hero__stage{position:sticky;top:0;height:100vh;height:100svh;overflow:clip;color:#fff}
+.hero__media{position:absolute;inset:0;will-change:clip-path;background:var(--primer)}
+.hero__media canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero__shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,17,14,.55) 0%,rgba(20,17,14,0) 26%,rgba(20,17,14,.25) 50%,rgba(20,17,14,.88) 100%);opacity:0;pointer-events:none}
+.hero__copy{position:absolute;left:0;right:0;bottom:calc(34px + env(safe-area-inset-bottom,0px));z-index:2;display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+.hero h1{font-size:clamp(44px,min(10.4vw,15vh),184px);max-width:9.5em}
+.hero h1 em{color:var(--tape-lt)}
+.hero__row{display:flex;flex-wrap:wrap;gap:18px 28px;align-items:flex-end;justify-content:space-between}
+.hero__row p{margin:0;max-width:44ch;color:rgba(255,255,255,.86);font-size:clamp(16px,1.25vw,19px)}
+.hero__ctas{display:flex;flex-wrap:wrap;gap:10px}
+.hud{position:absolute;right:calc(var(--gr) + var(--pad) - 16px);top:calc(98px + env(safe-area-inset-top,0px));z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);font-variant-numeric:tabular-nums;display:grid;gap:6px;justify-items:end;transition:color .6s}
+.hud b{font-weight:500}
+.hud__bar{width:120px;height:3px;background:rgba(29,26,23,.15);position:relative;overflow:hidden}
+.hud__bar i{position:absolute;inset:0;background:var(--tape);transform-origin:left;transform:scaleX(0)}
+.hero .tape{top:auto;bottom:-15px}
+
+/* ---------- facts ---------- */
+.facts{position:relative;background:var(--wenge);color:var(--primer);padding-block:clamp(64px,10vh,110px)}
+.facts__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.fact{padding:4px clamp(14px,2vw,28px) 0;border-left:1px solid var(--pline);display:grid;gap:10px;align-content:start}
+.fact:first-child{border-left:0;padding-left:0}
+.fact__num{font-family:var(--display);font-size:clamp(56px,6.6vw,100px);line-height:.85;color:var(--tape-lt);font-variant-numeric:tabular-nums}
+.fact__num small{font-family:var(--ui);font-size:.24em;font-weight:500;color:var(--primer);margin-left:8px;letter-spacing:.01em}
+.fact__icon{width:clamp(54px,5.6vw,80px);height:clamp(54px,5.6vw,80px);color:var(--tape-lt)}
+.fact h3{margin:0;font-size:18px;font-weight:600}
+.fact p{margin:0;color:rgba(239,237,231,.68);font-size:15px;line-height:1.5;max-width:30ch}
+
+/* ---------- statement ---------- */
+.statement{position:relative;padding-block:clamp(90px,16vh,180px)}
+.statement__grid{display:grid;grid-template-columns:minmax(0,.32fr) minmax(0,1fr);gap:clamp(24px,5vw,80px)}
+.statement p{margin:0;font-family:var(--display);font-size:clamp(28px,min(3.6vw,6vh),58px);line-height:1.08;letter-spacing:-.01em;text-wrap:pretty}
+.statement p em{font-family:var(--serif);font-style:italic;color:var(--tape)}
+.sw{display:inline}
+.statement__sign{margin-top:clamp(28px,5vh,48px);display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- services: horizontal track ---------- */
+.services{position:relative;background:var(--wenge);color:var(--primer)}
+.services__pin>*{min-width:0}
+.services__pin{position:sticky;top:0;height:100vh;height:100svh;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr;align-content:center;gap:clamp(22px,4vh,48px);overflow:clip;padding-block:clamp(70px,10vh,110px) clamp(28px,6vh,60px)}
+.services__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:18px}
+.services__head .display{margin-top:16px}
+.services__count{font-family:var(--mono);font-size:13px;color:rgba(239,237,231,.6);font-variant-numeric:tabular-nums}
+.track{display:flex;gap:clamp(14px,1.6vw,24px);will-change:transform;padding-left:calc(var(--gl) + var(--pad) - 16px);padding-right:calc(var(--gr) + var(--pad) - 16px);min-height:0}
+.svc{flex:0 0 clamp(270px,27vw,400px);display:grid;grid-template-rows:auto minmax(0,1fr) auto;text-decoration:none;min-height:0;background:var(--primer);color:var(--ink);border-radius:6px;padding:10px 10px 18px;box-shadow:0 30px 60px -36px rgba(0,0,0,.7);transition:transform .8s var(--ease)}
+.svc:hover{transform:translateY(-6px) rotate(-.6deg)}
+.svc__chip{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;padding:2px 4px 10px;color:var(--muted)}
+.svc__img{position:relative;border-radius:3px;overflow:hidden;min-height:200px;background:var(--primer-2)}
+.svc__img img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.svc:hover .svc__img img{transform:scale(1.07)}
+.svc__body{padding:16px 6px 0}
+.svc h3{margin:0;font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(26px,2.3vw,36px);line-height:.95;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.svc h3 span{font-family:var(--mono);font-size:14px;color:var(--tape);transition:transform .6s var(--ease)}
+.svc:hover h3 span{transform:translate(4px,-4px)}
+.svc p{margin:8px 0 0;color:var(--muted);font-size:15px;line-height:1.5;max-width:36ch}
+.svc--tape{background:var(--tape);color:#fff}
+.svc--tape .svc__chip,.svc--tape p{color:rgba(255,255,255,.8)}
+.svc--tape h3 span{color:#fff}
+.svc--tape .svc__img{background:rgba(255,255,255,.1);display:grid;place-items:center}
+.svc--tape ul{list-style:none;margin:0;padding:0 18px;display:grid;gap:10px;font-family:var(--serif);font-style:italic;font-size:clamp(24px,2.2vw,32px);line-height:1}
+.services__bar{height:2px;background:var(--pline);position:relative}
+.services__bar i{position:absolute;inset:0;background:var(--tape-lt);transform-origin:left;transform:scaleX(0)}
+
+/* ---------- work ---------- */
+.work{position:relative;padding-block:clamp(90px,14vh,160px)}
+.work__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:20px;margin-bottom:clamp(32px,6vh,64px)}
+.work__head .display{margin-top:16px}
+.gallery{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(10px,1.2vw,18px);grid-auto-flow:dense}
+.tile{position:relative;border-radius:4px;overflow:hidden;grid-column:span 4;aspect-ratio:4/3;background:var(--primer-2);margin:0}
+.tile--wide{grid-column:span 8;aspect-ratio:auto}
+.tile--tall{grid-row:span 2;aspect-ratio:auto}
+.tile img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.tile:hover img{transform:scale(1.06)}
+.tile figcaption{position:absolute;left:10px;bottom:10px;display:grid;gap:2px;padding:10px 14px 9px;background:var(--primer);color:var(--ink);font-size:14px;font-weight:600;border-radius:2px;box-shadow:0 10px 24px -10px rgba(0,0,0,.5);transform:translateY(8px);opacity:0;transition:.6s var(--ease)}
+.tile figcaption span{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.12em;color:var(--tape)}
+.tile:hover figcaption,.tile:focus-within figcaption{transform:none;opacity:1}
+.tile button{position:absolute;inset:0;z-index:1}
+
+/* ---------- process ---------- */
+.flow{position:relative;background:var(--primer-2);padding-block:clamp(90px,14vh,160px)}
+.flow__grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,6vw,96px)}
+.flow__side{position:sticky;top:clamp(90px,14vh,140px);align-self:start;display:grid;gap:22px}
+.coats{display:flex;gap:6px;margin-top:6px}
+.coats i{flex:1;height:10px;background:var(--line);clip-path:polygon(0 10%,4% 0,96% 0,100% 20%,100% 85%,95% 100%,5% 100%,0 80%);transition:background .6s var(--ease),transform .6s var(--ease)}
+.coats i.is-on{background:var(--tape);transform:translateY(-3px)}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:clamp(48px,9vh,96px)}
+.step{display:grid;gap:16px;opacity:.45;transition:opacity .6s var(--ease)}
+.step.is-on{opacity:1}
+.step__img{border-radius:4px;overflow:hidden;aspect-ratio:3/2}
+.step__img img{width:100%;height:100%;object-fit:cover}
+.step__num{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--tape)}
+.step h3{margin:0;font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(32px,3.2vw,50px);line-height:.95}
+.step p{margin:0;color:var(--muted);max-width:46ch}
+
+/* ---------- reviews ---------- */
+.reviews{position:relative;background:var(--tape);color:#fff;padding-block:clamp(90px,14vh,160px);overflow:clip}
+.reviews .eyebrow{background:var(--primer);color:var(--tape)}
+.reviews__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:24px}
+.reviews__head .display{margin-top:16px}
+.score{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:13px;letter-spacing:.08em}
+.score b{font-family:var(--display);font-weight:400;font-size:64px;letter-spacing:0;line-height:1}
+.stars{display:flex;gap:3px;color:#ffd77a}
+.stars svg{width:16px;height:16px}
+.quotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,32px);margin-top:clamp(40px,7vh,72px);align-items:start}
+.quote{margin:0;display:grid;gap:20px;align-content:start;padding:clamp(22px,2.4vw,32px);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:6px}
+.quote blockquote{margin:0;font-family:var(--serif);font-style:italic;font-size:clamp(23px,1.9vw,30px);line-height:1.15}
+.quote footer{display:flex;align-items:center;gap:12px;font-size:15px}
+.quote footer i{width:40px;height:40px;border-radius:50%;background:var(--primer);color:var(--tape);display:grid;place-items:center;font-style:normal;font-weight:700}
+.quote--feature{grid-row:span 2;background:var(--primer);color:var(--ink);border-color:transparent}
+.quote--feature blockquote{font-size:clamp(26px,2.3vw,36px)}
+.quote--feature footer i{background:var(--tape);color:#fff}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chip{border-radius:3px;overflow:hidden;box-shadow:0 0 0 1px var(--line)}
+.chip div{height:84px}
+.chip p{margin:0;padding:8px 10px 9px;font-size:13px;font-weight:600;background:#fff}
+.chip p span{display:block;font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:.08em;color:var(--muted)}
+.chips__note{grid-column:1/-1;margin:0;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.04em}
+
+/* ---------- faq ---------- */
+.faq{position:relative;padding-block:clamp(90px,14vh,160px)}
+.faq__grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(28px,6vw,96px)}
+.faq__grid .display{margin-top:16px}
+.qa{border-top:1px solid var(--line)}
+.qa:last-child{border-bottom:1px solid var(--line)}
+.qa summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;align-items:center;padding:24px 0;font-size:clamp(19px,1.6vw,24px);font-weight:600;line-height:1.25}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary i{flex:none;width:36px;height:36px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line);position:relative;transition:background .4s,box-shadow .4s}
+.qa summary i::before,.qa summary i::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.5px;margin:-.75px 0 0 -6px;background:currentColor;transition:transform .6s var(--ease)}
+.qa summary i::after{transform:rotate(90deg)}
+.qa[open] summary i{background:var(--tape);color:#fff;box-shadow:none}
+.qa[open] summary i::after{transform:rotate(0)}
+.qa summary:hover i{box-shadow:inset 0 0 0 1.5px var(--tape)}
+.qa__a{overflow:hidden}
+.qa__a p{margin:0 0 26px;color:var(--muted);max-width:60ch}
+
+/* ---------- contact ---------- */
+.contact{position:relative;background:var(--wenge);color:var(--primer);padding-block:clamp(90px,14vh,160px) 0;overflow:clip}
+.contact__grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,96px);align-items:start}
+.contact .display{margin-top:16px}
+.contact .display em{color:var(--tape-lt)}
+.contact__list{list-style:none;margin:30px 0 0;padding:0;display:grid}
+.contact__list li{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;padding:16px 0;border-top:1px solid var(--pline)}
+.contact__list span{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,237,231,.55);padding-top:3px}
+.contact__list a{text-decoration:none;background:linear-gradient(var(--tape-lt),var(--tape-lt)) 0 100%/0 1px no-repeat;transition:background-size .5s var(--ease)}
+.contact__list a:hover{background-size:100% 1px}
+.form{display:grid;gap:14px;background:var(--wenge-2);border-radius:8px;padding:clamp(20px,3vw,36px)}
+.form h3{margin:0 0 4px;font-size:22px;font-weight:600}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:grid;gap:6px}
+.field label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,237,231,.6)}
+.field input,.field select,.field textarea{width:100%;background:rgba(239,237,231,.06);border:1px solid var(--pline);border-radius:6px;padding:13px 14px;color:var(--primer);font-size:16px;outline:none;transition:border-color .3s,background .3s}
+.field textarea{min-height:110px;resize:vertical}
+.field select option{color:#111}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--tape-lt);background:rgba(239,237,231,.1)}
+.form__note{font-size:13px;color:rgba(239,237,231,.55);margin:0}
+.form .btn{justify-self:start;margin-top:4px}
+.giant{margin-top:clamp(64px,10vh,120px);display:flex;justify-content:space-between;font-family:var(--display);text-transform:uppercase;font-size:clamp(120px,33vw,560px);line-height:.74;letter-spacing:-.02em;color:var(--primer);user-select:none;overflow:hidden;padding-top:.06em}
+.giant span{display:inline-block;will-change:transform}
+.giant span:nth-child(2){color:var(--tape-lt)}
+.legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding-block:22px calc(22px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--pline);font-size:13px;color:rgba(239,237,231,.55)}
+
+/* ---------- mobile call bar ---------- */
+.callbar{position:fixed;z-index:40;left:var(--gl);right:var(--gr);bottom:calc(12px + env(safe-area-inset-bottom,0px));display:none;gap:8px;transform:translateY(160%);transition:transform .7s var(--ease)}
+.callbar.is-in{transform:none}
+.callbar a{flex:1;justify-content:center;height:52px;box-shadow:0 14px 30px -12px rgba(0,0,0,.5)}
+
+/* ---------- lightbox ---------- */
+.lightbox{border:0;padding:0;max-width:100vw;max-height:100vh;width:100vw;height:100vh;background:rgba(24,21,18,.95);color:#fff}
+.lightbox::backdrop{background:transparent}
+.lightbox[open]{display:grid;place-items:center}
+.lightbox img{max-width:min(1200px,92vw);max-height:80vh;border-radius:4px;object-fit:contain}
+.lb-btn{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.12);display:grid;place-items:center;color:#fff}
+.lb-btn:hover{background:rgba(255,255,255,.22)}
+.lb-close{top:calc(18px + env(safe-area-inset-top,0px));right:var(--gr)}
+.lb-prev{left:var(--gl);top:50%;margin-top:-26px}.lb-next{right:var(--gr);top:50%;margin-top:-26px}
+.lb-count{position:absolute;bottom:calc(22px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;font-family:var(--mono);font-size:12px;letter-spacing:.14em}
+
+/* ---------- responsive ---------- */
+@media (max-width:980px){
+  .facts__grid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:36px}
+  .fact:nth-child(3){border-left:0;padding-left:0}
+  .statement__grid,.flow__grid,.contact__grid,.faq__grid{grid-template-columns:minmax(0,1fr)}
+  .quotes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow__side{position:static}
+  .tile{grid-column:span 6}
+  .tile--wide{grid-column:span 12;aspect-ratio:16/10}
+  .tile--tall{grid-row:auto;aspect-ratio:4/5}
+}
+@media (max-width:760px){
+  body{font-size:16px}
+  .pill--call-text{display:none}
+  .brand{height:48px;padding:0 16px}
+  .brand img{height:28px}
+  .header .pill--tape{display:none}
+  .header .pill{width:48px;padding:0;justify-content:center}
+  .callbar{display:flex}
+  .hero{height:150vh}
+  .hero__ctas{width:100%;display:grid;grid-template-columns:minmax(0,1fr)}
+  .hero__ctas .btn{justify-content:center}
+  .hero h1{font-size:clamp(42px,12.6vw,64px)}
+  .hud{top:calc(84px + env(safe-area-inset-top,0px))}
+  .services{height:auto!important}
+  .services__pin{position:relative;height:auto;padding-block:80px 64px}
+  .track{overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gl);transform:none!important;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:20px}
+  .track::-webkit-scrollbar{display:none}
+  .svc{flex-basis:80vw;scroll-snap-align:start}
+  .svc:hover{transform:none}
+  .svc__img{aspect-ratio:4/5;max-height:52vh}
+  .services__bar{display:none}
+  .quotes{grid-template-columns:minmax(0,1fr)}
+  .quote--feature{grid-row:auto}
+  .row2{grid-template-columns:minmax(0,1fr)}
+  .contact__list li{grid-template-columns:minmax(0,1fr);gap:4px}
+  .gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tile{grid-column:span 1;aspect-ratio:4/5}
+  .tile--wide{grid-column:span 2;aspect-ratio:4/3}
+  .tile--tall{grid-row:span 2;aspect-ratio:auto}
+  .tile figcaption{left:6px;bottom:6px;padding:7px 9px 6px;font-size:12px}
+  .tile figcaption{opacity:1;transform:none}
+  .legal{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="header" id="header">
+  <div class="header__bar wrap">
+    <a class="brand" href="#top" data-nav aria-label="DCD Painting, back to top"><img src="assets/2018-DCD-Painting-Logo-1.png" alt="DCD Painting" width="102" height="34"></a>
+    <div class="header__actions">
+      <a class="pill" href="tel:+15198903932"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg><span class="pill--call-text">(519) 890-3932</span><span class="sr">Call DCD Painting</span></a>
+      <a class="pill pill--tape" href="#quote" data-nav>Get an estimate</a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu"><span class="bars" aria-hidden="true"><i></i><i></i></span><span class="sr">Menu</span></button>
+    </div>
+  </div>
+</header>
+
+<nav class="menu" id="menu" aria-label="Main">
+  <div class="wrap">
+    <ol>
+      <li><a href="#services" data-nav>Services</a></li>
+      <li><a href="#work" data-nav>Our work</a></li>
+      <li><a href="#process" data-nav>How we work</a></li>
+      <li><a href="#reviews" data-nav>Reviews</a></li>
+      <li><a href="#quote" data-nav>Get a quote</a></li>
+    </ol>
+    <div class="menu__foot"><a href="tel:+15198903932">(519) 890-3932</a><span>Windsor &amp; Essex County, Ontario</span><span>Fully insured &amp; bonded</span></div>
+  </div>
+</nav>
+
+<main id="top">
+  <!-- HERO: a roller paints the photo onto a primed wall, two coats -->
+  <section class="hero" id="hero" aria-label="Introduction">
+    <div class="hero__stage">
+      <div class="hero__media" id="heroMedia">
+        <canvas id="roller" aria-hidden="true"></canvas>
+        <div class="hero__shade" id="shade"></div>
+      </div>
+      <div class="hud" id="hud" aria-hidden="true"><span>Coat <b id="coatN">01</b> · <b id="coatP">000</b>%</span><span class="hud__bar"><i id="coatBar"></i></span></div>
+      <div class="hero__copy wrap">
+        <span class="eyebrow reveal-fade">Painting &amp; home services · Windsor &amp; Essex County</span>
+        <h1 class="display" id="heroTitle" data-chars>Exactly as you <em>envisioned</em></h1>
+        <div class="hero__row">
+          <p class="reveal-fade">Interior and exterior painting, cabinets, backsplashes and finish trim for homes and businesses. Proper prep, clean application, a competitive price.</p>
+          <div class="hero__ctas reveal-fade on-dark">
+            <a class="btn btn--tape" href="#quote" data-nav><span class="roll"><span>Get a free estimate</span><span aria-hidden="true">Get a free estimate</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn--ghost" href="#work" data-nav><span class="roll"><span>See our work</span><span aria-hidden="true">See our work</span></span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tape" aria-hidden="true"><div class="tape__body"></div><div class="tape__curl"></div></div>
+  </section>
+
+  <!-- FACTS -->
+  <section class="facts" aria-labelledby="whyTitle">
+    <h2 class="sr" id="whyTitle">Why homeowners choose DCD</h2>
+    <div class="facts__grid wrap">
+      <div class="fact"><div class="fact__num"><span id="score">4.9</span><small>out of 5</small></div><h3>45 reviews</h3><p>Neighbours across Windsor and Essex County, many of them repeat customers.</p></div>
+      <div class="fact"><svg class="fact__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 5 8 11v11c0 10 7 18 16 21 9-3 16-11 16-21V11z"/><path d="m17 24 5 5 9-10"/></svg><h3>Insured &amp; bonded</h3><p>Your property is protected, and so is every person working on it.</p></div>
+      <div class="fact"><svg class="fact__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="8" width="30" height="11" rx="2"/><path d="M36 13h5v9H22v6"/><rect x="18" y="28" width="8" height="14" rx="2"/></svg><h3>Homes &amp; businesses</h3><p>Full-service residential and commercial painting, inside and out.</p></div>
+      <div class="fact"><svg class="fact__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 43s14-12 14-24a14 14 0 1 0-28 0c0 12 14 24 14 24z"/><circle cx="24" cy="19" r="5"/></svg><h3>Local crew</h3><p>Windsor, LaSalle, Kingsville and the rest of Essex County.</p></div>
+    </div>
+  </section>
+
+  <!-- STATEMENT -->
+  <section class="statement" aria-label="About DCD Painting">
+    <div class="tape" aria-hidden="true"><div class="tape__body"></div><div class="tape__curl"></div></div>
+    <div class="statement__grid wrap">
+      <div><span class="eyebrow">Our mission</span></div>
+      <div>
+        <p id="statement">We prep like it matters, because it does. Filled cracks, sanded trim, cut lines you can’t find. Then the paint goes on and the room comes back to life. Our job is a finished space that looks <em>immaculate,</em> and <em>exactly</em> the way you pictured it.</p>
+        <div class="statement__sign"><span>Painting</span><span>·</span><span>Cabinets</span><span>·</span><span>Backsplashes</span><span>·</span><span>Trim</span><span>·</span><span>Pressure washing</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services" aria-labelledby="svcTitle">
+    <div class="tape" aria-hidden="true"><div class="tape__body"></div><div class="tape__curl"></div></div>
+    <div class="services__pin">
+      <div class="services__head wrap">
+        <div><span class="eyebrow">What we do</span><h2 class="display h2" id="svcTitle" data-chars>Seven trades, <em>one crew</em></h2></div>
+        <span class="services__count" id="svcCount" aria-hidden="true">01 / 07</span>
+      </div>
+      <div>
+        <div class="track" id="track">
+          <a class="svc" href="#quote" data-nav><div class="svc__chip"><span>DCD · 01</span><span>Interior</span></div><div class="svc__img"><img src="assets/2024-Entrance.png" alt="Bright two-storey foyer with a painted staircase railing" loading="lazy"></div><div class="svc__body"><h3>Interior painting <span>↗</span></h3><p>Walls, ceilings, doors and trim, with filling, sanding and priming done before a drop of colour goes on.</p></div></a>
+          <a class="svc" href="#quote" data-nav><div class="svc__chip"><span>DCD · 02</span><span>Exterior</span></div><div class="svc__img"><img src="assets/2024-b56f9376-19f6-4753-8995-428cfa12da30.jpg" alt="Freshly painted dark grey exterior siding" loading="lazy"></div><div class="svc__body"><h3>Exterior painting <span>↗</span></h3><p>Siding, front doors and trim, prepped and coated to stand up to Essex County summers and winters.</p></div></a>
+          <a class="svc" href="#quote" data-nav><div class="svc__chip"><span>DCD · 03</span><span>Cabinets</span></div><div class="svc__img"><img src="assets/2024-2f75ed60-1967-45df-9618-5e450477d009.jpg" alt="Kitchen island cabinets refinished in a deep navy" loading="lazy"></div><div class="svc__body"><h3>Cabinet painting <span>↗</span></h3><p>Kitchen and bathroom cabinets refinished in low-VOC paint, custom colour-matched from matte to high gloss.</p></div></a>
+          <a class="svc" href="#quote" data-nav><div class="svc__chip"><span>DCD · 04</span><span>Tile</span></div><div class="svc__img"><img src="assets/2024-3b554524-85fd-41b5-a62a-498fed158da1.jpg" alt="New marble-look tile backsplash behind a range" loading="lazy"></div><div class="svc__body"><h3>Kitchen backsplash <span>↗</span></h3><p>Subway, mosaic or geometric tile, aligned true, cut neatly around every outlet, grouted and sealed.</p></div></a>
+          <a class="svc" href="#quote" data-nav><div class="svc__chip"><span>DCD · 05</span><span>Carpentry</span></div><div class="svc__img"><img src="assets/2024-DCD-Painting-Windsor-Ontario-2.jpg" alt="Double doors framed with new casings and baseboards" loading="lazy"></div><div class="svc__body"><h3>Finish trimming <span>↗</span></h3><p>Baseboards, window and door casings and crown moulding, installed and painted as one clean job.</p></div></a>
+          <a class="svc" href="#quote" data-nav><div class="svc__chip"><span>DCD · 06</span><span>Commercial</span></div><div class="svc__img"><img src="assets/2024-DCD-Painting-Windsor-Ontario-10.jpg" alt="Large open interior space freshly painted" loading="lazy"></div><div class="svc__body"><h3>Commercial painting <span>↗</span></h3><p>Offices, retail and industrial spaces, with durable, easy-clean finishes and specialty coatings like epoxy.</p></div></a>
+          <a class="svc svc--tape" href="#quote" data-nav><div class="svc__chip"><span>DCD · 07</span><span>Odd jobs</span></div><div class="svc__img"><ul><li>Pressure washing</li><li>Drywall repairs</li><li>Caulking</li><li>That one picture you can’t hang</li></ul></div><div class="svc__body"><h3>Handyman &amp; more <span>↗</span></h3><p>Pressure washing and a variety of handyman services. Bring us the list on your fridge.</p></div></a>
+        </div>
+        <div class="wrap" style="margin-top:28px"><div class="services__bar" aria-hidden="true"><i id="svcBar"></i></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="work" id="work" aria-labelledby="workTitle">
+    <div class="tape" aria-hidden="true"><div class="tape__body"></div><div class="tape__curl"></div></div>
+    <div class="wrap">
+      <div class="work__head">
+        <div><span class="eyebrow">Our work</span><h2 class="display h2" id="workTitle" data-chars>Rooms, <em>finished</em></h2></div>
+        <p class="lede">Staircases, kitchens, cabinets, siding and one riverfront condo with a view of Detroit. Tap any photo to see it full size.</p>
+      </div>
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="flow" id="process" aria-labelledby="flowTitle">
+    <div class="flow__grid wrap">
+      <div class="flow__side">
+        <span class="eyebrow">How we work</span>
+        <h2 class="display h2" id="flowTitle" data-chars>Prep is <em>the job</em></h2>
+        <p class="lede">Most of a great paint job happens before the paint. Here’s what to expect from first call to final walk-through.</p>
+        <div class="coats" id="coats" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="on-dark" style="justify-self:start;margin-top:8px"><a class="btn btn--tape" href="#quote" data-nav><span class="roll"><span>Start with a quote</span><span aria-hidden="true">Start with a quote</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      </div>
+      <ol class="steps">
+        <li class="step"><div class="step__img"><img src="assets/2024-Kitchen.png" alt="Finished kitchen with painted cabinets and a large island" loading="lazy"></div><span class="step__num">STEP 01</span><h3>Quote &amp; colour advice</h3><p>We talk through your goals, the materials that suit them, and any other plans for the space, then give you a clear estimate. Ask us anything.</p></li>
+        <li class="step"><div class="step__img"><img src="assets/2024-DCD-Painting-Home-Services-1.jpg" alt="Condo prepped for painting with drop cloths and ladders" loading="lazy"></div><span class="step__num">STEP 02</span><h3>Protect &amp; prep</h3><p>Floors and furniture covered, cracks filled, nail holes patched, surfaces sanded and primed. You can keep living around us.</p></li>
+        <li class="step"><div class="step__img"><img src="assets/2024-DCD-Painting-Windsor-Ontario-4.jpg" alt="Room mid-project with materials laid out" loading="lazy"></div><span class="step__num">STEP 03</span><h3>Cut in, roll, spray</h3><p>High-quality products applied by hand or by sprayer, whichever gives the cleaner finish for that surface.</p></li>
+        <li class="step"><div class="step__img"><img src="assets/2024-7389f302-2948-4c0b-a677-2bb624b5ae64.jpg" alt="Clean, freshly painted room with new baseboards" loading="lazy"></div><span class="step__num">STEP 04</span><h3>Clean up &amp; walk-through</h3><p>A spotless work area every evening, and a walk-through at the end to touch up anything you want changed. You don’t need to be home in between.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews" id="reviews" aria-labelledby="revTitle">
+    <div class="tape" aria-hidden="true"><div class="tape__body" style="background:var(--primer)"></div><div class="tape__curl" style="background:linear-gradient(90deg,#fff,#e5e2d9)"></div></div>
+    <div class="wrap">
+      <div class="reviews__head">
+        <div><span class="eyebrow">Reviews</span><h2 class="display h2" id="revTitle" data-chars>Worth <em>calling back</em></h2></div>
+        <div class="score"><b>4.9</b><span><span class="stars" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 7 7 .6-5.4 4.7L18.2 22 12 18.3 5.8 22l1.6-7.7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 7 7 .6-5.4 4.7L18.2 22 12 18.3 5.8 22l1.6-7.7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 7 7 .6-5.4 4.7L18.2 22 12 18.3 5.8 22l1.6-7.7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 7 7 .6-5.4 4.7L18.2 22 12 18.3 5.8 22l1.6-7.7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 7 7 .6-5.4 4.7L18.2 22 12 18.3 5.8 22l1.6-7.7L2 9.6 9 9z"/></svg></span>FROM 45 REVIEWS</span></div>
+      </div>
+      <div class="quotes">
+        <figure class="quote quote--feature reveal-up">
+          <blockquote>We got over 6 quotes due to the size of the project. Dave and Brett came by a week after the job was done to touch up any areas… It was clear the quality of the work was as important to him as it was to us.</blockquote>
+          <div class="chips">
+            <div class="chip"><div style="background:#4f4842"></div><p>Wenge<span>BENJAMIN MOORE · ACCENT WALL</span></p></div>
+            <div class="chip"><div style="background:#ebeae4"></div><p>Cold Foam<span>PPG · COLOUR-MATCHED</span></p></div>
+            <p class="chips__note">The colours from her 3,000 sq ft main floor. Swatches are screen approximations.</p>
+          </div>
+          <footer><i aria-hidden="true">S</i><span><b>Sophia H.</b> · Whole main floor, trim &amp; doors</span></footer>
+        </figure>
+        <figure class="quote reveal-up">
+          <blockquote>Other companies were either over-quoting or refusing to quote due to complexity. They scheduled the job faster than expected, kept everything clean, charged a fair price.</blockquote>
+          <footer><i aria-hidden="true">G</i><span><b>Graham B.</b> · Exterior siding</span></footer>
+        </figure>
+        <figure class="quote reveal-up">
+          <blockquote>He always left at the end of the day with a spotless work area. You can tell he takes pride in his work.</blockquote>
+          <footer><i aria-hidden="true">P</i><span><b>Phil B.</b></span></footer>
+        </figure>
+        <figure class="quote reveal-up">
+          <blockquote>He sprayed the interior doors and porch walls to get a perfect finish. Very knowledgeable on the proper paints to use and prep work needed.</blockquote>
+          <footer><i aria-hidden="true">J</i><span><b>Jenn K.</b> · Doors &amp; porch</span></footer>
+        </figure>
+        <figure class="quote reveal-up">
+          <blockquote>They were so kind and friendly with my 80 year old parents. Dave’s attention to detail was impressive.</blockquote>
+          <footer><i aria-hidden="true">D</i><span><b>Deborah M.</b> · Farmhouse main level</span></footer>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" aria-labelledby="faqTitle">
+    <div class="tape" aria-hidden="true"><div class="tape__body"></div><div class="tape__curl"></div></div>
+    <div class="faq__grid wrap">
+      <div><span class="eyebrow">Questions</span><h2 class="display h2" id="faqTitle" data-chars>Asked <em>often</em></h2></div>
+      <div>
+        <details class="qa"><summary>Can you help me choose the right materials?<i aria-hidden="true"></i></summary><div class="qa__a"><p>Yes. We’ve worked across a wide range of materials and services. When we put your quote together, ask anything that comes to mind. The better we understand your goals and any other plans for the space, the more tailored our advice and recommendations can be.</p></div></details>
+        <details class="qa"><summary>Are you insured and bonded?<i aria-hidden="true"></i></summary><div class="qa__a"><p>Yes, fully insured and bonded. Your property is protected in the unlikely event of an accident, and our crew is covered too, so everyone involved is safe.</p></div></details>
+        <details class="qa"><summary>Do I need to be home while you work?<i aria-hidden="true"></i></summary><div class="qa__a"><p>No. We like to walk through the work with you before we start and again near the end, to make sure you’re happy. In between, your presence isn’t required.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE / CONTACT -->
+  <section class="contact" id="quote" aria-labelledby="ctTitle">
+    <div class="tape" aria-hidden="true"><div class="tape__body"></div><div class="tape__curl"></div></div>
+    <div class="wrap">
+      <div class="contact__grid">
+        <div>
+          <span class="eyebrow">Free estimate</span>
+          <h2 class="display h2" id="ctTitle" data-chars>Pick the colour. <em>We’ll do the rest.</em></h2>
+          <ul class="contact__list">
+            <li><span>Call / text</span><a href="tel:+15198903932">(519) 890-3932</a></li>
+            <li><span>Area</span><p style="margin:0">Windsor, LaSalle, Kingsville and Essex County</p></li>
+            <li><span>Work</span><p style="margin:0">Residential &amp; commercial · insured &amp; bonded</p></li>
+          </ul>
+        </div>
+        <form class="form" id="form" novalidate>
+          <h3>Tell us about your project</h3>
+          <div class="row2">
+            <div class="field"><label for="fName">Name</label><input id="fName" name="name" autocomplete="name" required></div>
+            <div class="field"><label for="fPhone">Phone</label><input id="fPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label for="fCity">City</label>
+              <select id="fCity" name="city"><option>Windsor</option><option>LaSalle</option><option>Kingsville</option><option>Elsewhere in Essex County</option></select></div>
+            <div class="field"><label for="fService">Service</label>
+              <select id="fService" name="service"><option>Interior painting</option><option>Exterior painting</option><option>Cabinet painting</option><option>Kitchen backsplash</option><option>Finish trimming</option><option>Commercial painting</option><option>Pressure washing / handyman</option><option>Not sure yet</option></select></div>
+          </div>
+          <div class="field"><label for="fMsg">What would you like done?</label><textarea id="fMsg" name="message" placeholder="e.g. Main floor walls and trim, about 1,200 sq ft. Thinking a warm white."></textarea></div>
+          <div class="on-dark"><button class="btn btn--tape" type="submit"><span class="roll"><span>Text us the details</span><span aria-hidden="true">Text us the details</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+          <p class="form__note" id="formNote" aria-live="polite">Opens your messaging app with everything filled in. You can add up to 3 photos of the space there. Prefer to talk? Call (519) 890-3932.</p>
+        </form>
+      </div>
+      <div class="giant" id="giant" aria-hidden="true"><span>D</span><span>C</span><span>D</span></div>
+      <div class="legal"><span>© 2026 DCD Painting &amp; Home Services. All rights reserved.</span><span>Windsor · Essex County · Ontario</span></div>
+    </div>
+  </section>
+</main>
+
+<div class="callbar on-dark" id="callbar">
+  <a class="btn btn--light" href="tel:+15198903932">Call now</a>
+  <a class="btn btn--tape" href="#quote" data-nav>Free estimate</a>
+</div>
+
+<dialog class="lightbox" id="lightbox" aria-label="Project photo">
+  <img id="lbImg" alt="">
+  <button class="lb-btn lb-close" type="button" id="lbClose" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <button class="lb-btn lb-prev" type="button" id="lbPrev" aria-label="Previous photo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+  <button class="lb-btn lb-next" type="button" id="lbNext" aria-label="Next photo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
+  <span class="lb-count" id="lbCount"></span>
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(() => {
+'use strict';
+gsap.registerPlugin(ScrollTrigger);
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isPhone = () => innerWidth <= 760;
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const clamp01 = v => Math.max(0, Math.min(1, v));
+
+const lenis = new Lenis({ duration: 1.15, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: !reduced });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
+
+/* =========================================================
+   1. The roller: W-pattern passes paint the photo onto primer.
+      Coat 1 is thin (primer shows through the nap), coat 2 goes solid.
+   ========================================================= */
+const R = { cv: $('#roller'), img: new Image(), t0: 0, done: false };
+R.img.src = 'assets/2025-Kitchen-DCD-Painting.jpg';
+const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+function layoutRoller() {
+  const c = R.cv, r = c.getBoundingClientRect(), dpr = Math.min(devicePixelRatio, 1.75);
+  c.width = Math.round(r.width * dpr); c.height = Math.round(r.height * dpr);
+  const W = R.W = c.width, H = R.H = c.height; R.ctx = c.getContext('2d'); R.dpr = dpr;
+  seed = 7;
+  // photo, cover-fit once at screen resolution
+  const iw = R.img.naturalWidth, ih = R.img.naturalHeight;
+  R.photo = mk(W, H);
+  if (iw) {
+    const ir = iw / ih, cr = W / H; let sx, sy, sw, sh;
+    if (ir > cr) { sh = ih; sw = sh * cr; sx = (iw - sw) / 2; sy = 0; } else { sw = iw; sh = sw / cr; sx = 0; sy = (ih - sh) / 2; }
+    const o = R.photo.getContext('2d'); o.imageSmoothingQuality = 'high'; o.drawImage(R.img, sx, sy, sw, sh, 0, 0, W, H);
+  }
+  // primer wall: warm white with faint roller texture
+  R.primer = mk(W, H); { const p = R.primer.getContext('2d'); p.fillStyle = '#ebe8e1'; p.fillRect(0, 0, W, H);
+    for (let i = 0; i < 2600; i++) { p.fillStyle = `rgba(80,70,60,${rnd() * .045})`; p.fillRect(rnd() * W, rnd() * H, 1 + rnd() * 3 * dpr, 1 + rnd() * 2 * dpr); }
+    const g = p.createRadialGradient(W / 2, H / 2, H * .2, W / 2, H / 2, Math.max(W, H) * .75); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(60,50,40,.12)'); p.fillStyle = g; p.fillRect(0, 0, W, H); }
+  // roller nap: the thin first coat is streaky along the roll direction, with a light stipple
+  const nap = mk(128, 128), n = nap.getContext('2d');
+  n.fillStyle = 'rgba(255,255,255,.8)'; n.fillRect(0, 0, 128, 128);
+  for (let i = 0; i < 90; i++) { n.fillStyle = `rgba(255,255,255,${.4 + rnd() * .6})`; n.fillRect(rnd() * 128, rnd() * 128 - 40, 1 + rnd() * 3, 30 + rnd() * 90); }
+  for (let i = 0; i < 260; i++) { n.fillStyle = `rgba(255,255,255,${.85 + rnd() * .15})`; n.beginPath(); n.arc(rnd() * 128, rnd() * 128, .5 + rnd() * 1.2, 0, 7); n.fill(); }
+  R.mask = mk(W, H); R.comp = mk(W, H);
+  R.mctx = R.mask.getContext('2d'); R.mctx.fillStyle = R.mctx.createPattern(nap, 'repeat');
+  // passes
+  const rw = R.rw = Math.max(110 * dpr, W / (isPhone() ? 2.9 : 6.2));
+  const step = rw * .74, count = Math.ceil((W + rw * .4) / step) + 1;
+  R.passes = [];
+  for (let k = 0; k < count; k++) {
+    const down = k % 2 === 0;
+    const edge = []; for (let i = 0; i < 70; i++) edge.push({ t: rnd(), side: rnd() < .5 ? 0 : 1, off: (rnd() - .5) * rw * .05, r: (1 + rnd() * 3.2) * dpr });
+    R.passes.push({ x0: k * step - rw * .38, slant: rw * (.05 + rnd() * .05) * (down ? 1 : -1), down, start: .35 + k * .21 + rnd() * .05, dur: .5 + rnd() * .08, edge });
+  }
+  const last = R.passes[R.passes.length - 1];
+  R.T1 = last.start + last.dur; R.T2 = R.T1 + 1.0;
+}
+const io = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+function passX(p, y) { return p.x0 + p.slant * (y / R.H); }
+function drawRoller(now) {
+  const { ctx, W, H, mctx, rw } = R; if (!ctx || !R.photo) return true;
+  const t = reduced ? 99 : (now - R.t0) / 1000;
+  const top = -rw * .3, bot = H + rw * .3, span = bot - top;
+  // mask: coat 1 passes
+  mctx.clearRect(0, 0, W, H);
+  const active = [];
+  let sum = 0;
+  for (const p of R.passes) {
+    const k = io(clamp01((t - p.start) / p.dur)); sum += k;
+    if (k <= 0) continue;
+    if (k < 1) active.push([p, k]);
+    const yA = p.down ? top : bot, yB = p.down ? top + span * k : bot - span * k;
+    mctx.beginPath();
+    mctx.moveTo(passX(p, yA), yA); mctx.lineTo(passX(p, yA) + rw, yA);
+    mctx.lineTo(passX(p, yB) + rw, yB); mctx.lineTo(passX(p, yB), yB); mctx.closePath(); mctx.fill();
+    // ragged roller edges
+    for (const e of p.edge) {
+      const y = top + span * e.t; if (p.down ? y > yB : y < yB) continue;
+      mctx.beginPath(); mctx.arc(passX(p, y) + e.side * rw + e.off, y, e.r, 0, 7); mctx.fill();
+    }
+  }
+  // coat 2 fills the speckles
+  const c2 = clamp01((t - R.T1 + .15) / (R.T2 - R.T1));
+  if (c2 > 0) { mctx.save(); mctx.globalAlpha = io(c2); mctx.fillStyle = '#fff'; mctx.fillRect(0, 0, W, H); mctx.restore(); }
+  // composite: photo through mask, over primer
+  const cc = R.comp.getContext('2d');
+  cc.globalCompositeOperation = 'source-over'; cc.clearRect(0, 0, W, H); cc.drawImage(R.mask, 0, 0);
+  cc.globalCompositeOperation = 'source-in'; cc.drawImage(R.photo, 0, 0); cc.globalCompositeOperation = 'source-over';
+  ctx.drawImage(R.primer, 0, 0); ctx.drawImage(R.comp, 0, 0);
+  // the roller itself on each active pass
+  for (const [p, k] of active) {
+    const y = p.down ? top + span * k : bot - span * k, x = passX(p, y), d = R.dpr, h = rw * .2;
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,.35)'; ctx.shadowBlur = 18 * d; ctx.shadowOffsetY = 8 * d;
+    // frame + handle trail toward the bottom-right, like the painter stands below
+    ctx.strokeStyle = '#9a958d'; ctx.lineWidth = 4 * d; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    const xr = x + rw * 1.03;
+    ctx.beginPath(); ctx.moveTo(xr, y); ctx.lineTo(xr + 14 * d, y); ctx.lineTo(xr + 14 * d, y + rw * .32); ctx.lineTo(x + rw * .62, y + rw * .62); ctx.stroke();
+    ctx.strokeStyle = '#2f6bc8'; ctx.lineWidth = 13 * d;
+    ctx.beginPath(); ctx.moveTo(x + rw * .62, y + rw * .66); ctx.lineTo(x + rw * .58, y + rw * 1.35); ctx.stroke();
+    // sleeve, loaded with the dark paint
+    const g = ctx.createLinearGradient(0, y - h / 2, 0, y + h / 2);
+    g.addColorStop(0, '#16120f'); g.addColorStop(.35, '#4a4038'); g.addColorStop(.55, '#2a231e'); g.addColorStop(1, '#0d0b09');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(x - rw * .03, y - h / 2, rw * 1.06, h, h * .18); ctx.fill();
+    ctx.shadowColor = 'transparent';
+    ctx.fillStyle = '#c9c4bb'; ctx.fillRect(xr - 2 * d, y - h * .32, 4 * d, h * .64);
+    ctx.restore();
+  }
+  // HUD
+  const pct = c2 > 0 ? c2 : sum / R.passes.length;
+  $('#coatN').textContent = c2 > 0 ? '02' : '01';
+  $('#coatP').textContent = String(Math.round(pct * 100)).padStart(3, '0');
+  $('#coatBar').style.transform = `scaleX(${pct})`;
+  if (sum / R.passes.length > .55) $('#hud').style.color = '#fff';
+  return c2 >= 1;
+}
+function rollerLoop(now) { if (!drawRoller(now)) requestAnimationFrame(rollerLoop); else { R.done = true; gsap.to('#hud', { opacity: 0, duration: .8, delay: .4 }); } }
+function startRoller() { layoutRoller(); R.t0 = performance.now(); requestAnimationFrame(rollerLoop); }
+R.img.onload = startRoller;
+R.img.onerror = () => { R.cv.style.background = '#24201c'; R.done = true; };
+
+/* =========================================================
+   2. Char-split headlines (display serif)
+   ========================================================= */
+function splitChars(el) {
+  if (el._chars) return el._chars;
+  el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
+  const chars = [];
+  const walk = node => [...node.childNodes].forEach(n => {
+    if (n.nodeType === 3) {
+      const f = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach(tok => {
+        if (!tok) return;
+        if (/^\s+$/.test(tok)) { f.appendChild(document.createTextNode(' ')); return; }
+        const w = document.createElement('span'); w.className = 'w'; w.setAttribute('aria-hidden', 'true');
+        [...tok].forEach(ch => { const c = document.createElement('span'); c.className = 'c'; c.textContent = ch; w.appendChild(c); chars.push(c); });
+        f.appendChild(w);
+      });
+      n.replaceWith(f);
+    } else if (n.nodeType === 1) walk(n);
+  });
+  walk(el);
+  return (el._chars = chars);
+}
+function reveal(el, delay = 0) {
+  const chars = splitChars(el); if (reduced) return;
+  gsap.fromTo(chars, { yPercent: 110 }, { yPercent: 0, duration: 1.15, stagger: .014, ease: 'expo.out', delay });
+}
+
+/* =========================================================
+   3. Work gallery + lightbox
+   ========================================================= */
+const WORK = [
+  ['2024-Stairs.png', 'Curved staircase', 'tall'],
+  ['2024-Stairs-Entry.png', 'Railings, spindles & stringers', 'wide'],
+  ['2024-Kitchen-Stove.png', 'Kitchen cabinets', ''],
+  ['2024-c45e5ef5-1aff-4750-bac0-bd3fa0788a55.jpg', 'Navy island', ''],
+  ['2024-DCD-Painting-Home-Services-2.jpg', 'Riverfront condo, mid-job', 'wide'],
+  ['2024-b5054929-8e8b-46eb-a093-c91d375c7490.jpg', 'Backsplash install', ''],
+  ['2024-92d63ad9-f956-46ea-a340-47919ec44e3b.jpg', 'Bright interior', ''],
+  ['2024-f3b4317f-e2fa-4191-a060-959fb449689d.jpg', 'Cabinet refinish', 'tall'],
+  ['2024-872c72e8-3982-4a3c-8a33-0e69d96249c3.jpg', 'Kitchen & backsplash', ''],
+  ['2024-4c025a25-3585-46fd-a839-2e08d39f52d2.jpg', 'Hallway, walls & trim', ''],
+  ['2024-Kitchen.png', 'Open-plan kitchen', 'wide']
+];
+const gal = $('#gallery');
+WORK.forEach(([f, cap, size], i) => {
+  const fig = document.createElement('figure'); fig.className = 'tile' + (size ? ' tile--' + size : '');
+  fig.innerHTML = `<img src="assets/${f}" alt="${cap}" loading="lazy"><button type="button" aria-label="Open photo: ${cap}"></button><figcaption><span>DCD · NO. ${String(i + 1).padStart(2, '0')}</span>${cap}</figcaption>`;
+  $('button', fig).addEventListener('click', () => openLB(i));
+  gal.appendChild(fig);
+});
+const lb = $('#lightbox'); let lbi = 0;
+function showLB(i) { lbi = (i + WORK.length) % WORK.length; const [f, cap] = WORK[lbi]; $('#lbImg').src = 'assets/' + f; $('#lbImg').alt = cap; $('#lbCount').textContent = `${String(lbi + 1).padStart(2, '0')} / ${WORK.length} · ${cap}`; gsap.fromTo('#lbImg', { opacity: 0, scale: .97 }, { opacity: 1, scale: 1, duration: .6, ease: 'expo.out' }); }
+function openLB(i) { showLB(i); lb.showModal(); lenis.stop(); }
+lb.addEventListener('close', () => lenis.start());
+$('#lbClose').addEventListener('click', () => lb.close());
+$('#lbPrev').addEventListener('click', () => showLB(lbi - 1));
+$('#lbNext').addEventListener('click', () => showLB(lbi + 1));
+lb.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') showLB(lbi - 1); if (e.key === 'ArrowRight') showLB(lbi + 1); });
+let tx0 = null; lb.addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+lb.addEventListener('touchend', e => { if (tx0 === null) return; const d = e.changedTouches[0].clientX - tx0; if (Math.abs(d) > 50) showLB(lbi + (d < 0 ? 1 : -1)); tx0 = null; }, { passive: true });
+
+/* FAQ: animate open/close height */
+$$('.qa').forEach(d => {
+  const s = $('summary', d), a = $('.qa__a', d);
+  s.addEventListener('click', e => {
+    e.preventDefault();
+    if (d.open) { gsap.to(a, { height: 0, duration: reduced ? 0 : .5, ease: 'power3.in', onComplete: () => { d.open = false; a.style.height = ''; } }); }
+    else { d.open = true; gsap.fromTo(a, { height: 0 }, { height: 'auto', duration: reduced ? 0 : .8, ease: 'expo.out', onComplete: () => ScrollTrigger.refresh() }); }
+  });
+});
+
+/* =========================================================
+   4. Scroll choreography
+   ========================================================= */
+const mm = gsap.matchMedia();
+function build() {
+  // hero: the painted wall tucks into a framed panel
+  gsap.timeline({ scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom bottom', scrub: reduced ? true : .5 } })
+    .fromTo('#heroMedia', { clipPath: 'inset(0% 0% 0% 0% round 0px)' }, { clipPath: 'inset(7% 4% 11% 4% round 6px)', ease: 'none' }, 0)
+    .to('.hero__copy', { yPercent: -16, opacity: 0, ease: 'none' }, 0);
+
+  // tape peels off at every room change, leaving a clean line
+  $$('.tape').forEach(tp => {
+    const sec = tp.parentElement, isHero = sec.id === 'hero';
+    ScrollTrigger.create({
+      trigger: isHero ? sec : sec, start: isHero ? 'bottom 92%' : 'top 82%', end: isHero ? 'bottom 45%' : 'top 30%', scrub: reduced ? true : .4,
+      onUpdate: s => { const p = s.progress; tp.style.setProperty('--peel', (p * 102) + '%'); tp.style.setProperty('--curl', p > .01 && p < .98 ? 1 : 0); }
+    });
+  });
+
+  // facts
+  gsap.from('.fact', { y: 30, opacity: 0, stagger: .08, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: '.facts', start: 'top 80%' } });
+  const sc = $('#score'), o = { v: 0 };
+  ScrollTrigger.create({ trigger: sc, start: 'top 88%', once: true, onEnter: () => gsap.to(o, { v: 4.9, duration: reduced ? 0 : 1.6, ease: 'power3.out', onUpdate: () => sc.textContent = o.v.toFixed(1) }) });
+
+  // statement: words brighten as you read
+  const stw = $$('.sw');
+  gsap.fromTo(stw, { opacity: .16 }, { opacity: 1, stagger: .05, ease: 'none', scrollTrigger: { trigger: '#statement', start: 'top 80%', end: 'bottom 50%', scrub: true } });
+
+  // headings + bits
+  $$('[data-chars]').forEach(el => { if (el.id === 'heroTitle') return; ScrollTrigger.create({ trigger: el, start: 'top 88%', once: true, onEnter: () => reveal(el) }); });
+  $$('.reveal-up').forEach((el, i) => gsap.from(el, { y: 40, opacity: 0, duration: 1.1, ease: 'expo.out', delay: (i % 3) * .06, scrollTrigger: { trigger: el, start: 'top 90%' } }));
+  $$('.tile').forEach((el, i) => gsap.from(el, { y: 50, opacity: 0, duration: 1.1, ease: 'expo.out', delay: (i % 3) * .06, scrollTrigger: { trigger: el, start: 'top 94%' } }));
+
+  // services: vertical scroll drives the chip track (desktop/tablet)
+  const N = $$('.svc').length, pad = n => String(n).padStart(2, '0');
+  mm.add('(min-width: 761px)', () => {
+    const track = $('#track'), sec = $('#services');
+    const dist = () => Math.max(0, track.scrollWidth - innerWidth);
+    const setH = () => { sec.style.height = (innerHeight + dist()) + 'px'; };
+    setH();
+    const tw = gsap.to(track, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: sec, start: 'top top', end: () => '+=' + dist(), scrub: reduced ? true : .6, invalidateOnRefresh: true, onRefreshInit: setH,
+      onUpdate: s => { $('#svcBar').style.transform = `scaleX(${s.progress})`; $('#svcCount').textContent = `${pad(Math.min(N, 1 + Math.floor(s.progress * N)))} / ${pad(N)}`; } } });
+    return () => { tw.scrollTrigger && tw.scrollTrigger.kill(); tw.kill(); sec.style.height = ''; gsap.set(track, { clearProps: 'transform' }); };
+  });
+  mm.add('(max-width: 760px)', () => {
+    const track = $('#track');
+    const onS = () => { const i = Math.round(track.scrollLeft / (track.scrollWidth / N)); $('#svcCount').textContent = `${pad(Math.min(N, i + 1))} / ${pad(N)}`; };
+    track.addEventListener('scroll', onS, { passive: true });
+    return () => track.removeEventListener('scroll', onS);
+  });
+
+  // process: the step nearest the middle is lit, and its coat goes on
+  const steps = $$('.step'), coats = $$('#coats i'); let act = -1;
+  const pick = () => {
+    const mid = innerHeight / 2; let best = 0, bd = Infinity;
+    steps.forEach((s, i) => { const r = s.getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - mid); if (d < bd) { bd = d; best = i; } });
+    if (best === act) return; act = best;
+    steps.forEach((s, i) => s.classList.toggle('is-on', i === best));
+    coats.forEach((c, k) => c.classList.toggle('is-on', k <= best));
+  };
+  ScrollTrigger.create({ trigger: '.steps', start: 'top bottom', end: 'bottom top', onUpdate: pick, onRefresh: pick });
+  pick();
+
+  // header hides on the way down; phone call bar after the hero
+  let last = 0;
+  lenis.on('scroll', ({ scroll }) => {
+    const down = scroll > last && scroll > 200; last = scroll;
+    $('#header').classList.toggle('is-hidden', down && !document.body.classList.contains('is-menu'));
+    $('#callbar').classList.toggle('is-in', scroll > innerHeight * .9 && scroll < document.body.scrollHeight - innerHeight * 1.6);
+  });
+}
+
+/* statement word split (done early so layout is stable) */
+(() => {
+  const p = $('#statement');
+  const walk = node => [...node.childNodes].forEach(n => {
+    if (n.nodeType === 3) { const f = document.createDocumentFragment(); n.textContent.split(/(\s+)/).forEach(tok => { if (!tok) return; if (/^\s+$/.test(tok)) f.appendChild(document.createTextNode(' ')); else { const s = document.createElement('span'); s.className = 'sw'; s.textContent = tok; f.appendChild(s); } }); n.replaceWith(f); }
+    else if (n.nodeType === 1) walk(n);
+  });
+  walk(p);
+})();
+
+/* giant wordmark leans toward the pointer */
+const giant = $('#giant'), gls = $$('span', giant); let gx = null; const gy = gls.map(() => 0);
+giant.addEventListener('pointermove', e => gx = e.clientX); giant.addEventListener('pointerleave', () => gx = null);
+gsap.ticker.add(() => {
+  gls.forEach((l, i) => { let t = 0; if (gx !== null) { const r = l.getBoundingClientRect(); t = -Math.max(0, 1 - Math.abs(gx - (r.left + r.width / 2)) / 320) * 12; } gy[i] += (t - gy[i]) * .12; l.style.transform = `translateY(${gy[i]}%)`; });
+});
+
+/* =========================================================
+   5. Menu, nav, form
+   ========================================================= */
+const menuBtn = $('#menuBtn');
+function setMenu(open) {
+  document.body.classList.toggle('is-menu', open); menuBtn.setAttribute('aria-expanded', open);
+  open ? lenis.stop() : lenis.start();
+  if (open) gsap.fromTo('#menu li', { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1, stagger: .05, ease: 'expo.out', delay: .25 });
+}
+menuBtn.addEventListener('click', () => setMenu(!document.body.classList.contains('is-menu')));
+addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.classList.contains('is-menu')) { setMenu(false); menuBtn.focus(); } });
+$$('[data-nav]').forEach(a => a.addEventListener('click', e => {
+  const id = a.getAttribute('href'); if (!id || !id.startsWith('#')) return;
+  e.preventDefault(); const wasOpen = document.body.classList.contains('is-menu'); setMenu(false);
+  setTimeout(() => lenis.scrollTo(id === '#top' ? 0 : id, { duration: 1.6 }), wasOpen ? 350 : 0);
+}));
+$('#form').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.currentTarget, name = f.name.value.trim(), note = $('#formNote');
+  if (!name) { note.textContent = 'Please add your name so we know who we’re talking to.'; f.name.focus(); return; }
+  const body = `Hi DCD, this is ${name}${f.phone.value.trim() ? ' (' + f.phone.value.trim() + ')' : ''} in ${f.city.value}. I'd like a quote for: ${f.service.value}.${f.message.value.trim() ? '\n\n' + f.message.value.trim() : ''}`;
+  location.href = `sms:+15198903932?&body=${encodeURIComponent(body)}`;
+  note.textContent = 'Your messaging app should open with the request filled in. Attach photos there if you like. If nothing opened, call (519) 890-3932.';
+});
+
+/* =========================================================
+   6. Boot
+   ========================================================= */
+const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
+gsap.set('.hero .reveal-fade', { opacity: 0 });
+gsap.set('#heroTitle', { opacity: 0 });
+Promise.race([fontsReady, new Promise(r => setTimeout(r, 2500))]).then(() => {
+  // pre-hide below-the-fold headings so they can rise in
+  $$('[data-chars]').forEach(el => { if (el.id !== 'heroTitle' && el.getBoundingClientRect().top > innerHeight && !reduced) gsap.set(splitChars(el), { yPercent: 110 }); });
+  build();
+  // hero copy waits for the wall to be painted
+  const wait = reduced ? 0 : 2.5;
+  gsap.to('#shade', { opacity: 1, duration: 1.4, delay: wait - .4, ease: 'power2.out' });
+  gsap.set('#heroTitle', { opacity: 1, delay: wait });
+  splitChars($('#heroTitle')); if (!reduced) gsap.set($('#heroTitle')._chars, { yPercent: 110 });
+  reveal($('#heroTitle'), wait);
+  gsap.fromTo('.hero .reveal-fade', { y: 14, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.1, stagger: .08, ease: 'expo.out', delay: wait + .45 });
+});
+let rt, lastW = innerWidth;
+addEventListener('resize', () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => {
+    if (innerWidth === lastW && isPhone()) return;   // ignore mobile URL-bar height changes
+    lastW = innerWidth;
+    if (R.img.naturalWidth) { const wasDone = R.done; layoutRoller(); if (wasDone) { R.t0 = -1e9; drawRoller(performance.now()); } }
+    ScrollTrigger.refresh();
+  }, 200);
+});
+})();
+</script>
+</body>
+</html>
